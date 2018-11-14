@@ -29,6 +29,22 @@ def print(list)
   end
 end
 
+def print_by_letter(list)
+  list.each_with_index do |student, index|
+    if student[:name].start_with?("D")
+      puts "#{index + 1}. #{student[:name]} (#{student[:cohort]} cohort)"
+    end
+  end
+end
+
+def print_by_length(list)
+  list.each_with_index do |student, index|
+    if student[:name].length <= 12
+      puts "#{index + 1}. #{student[:name]} (#{student[:cohort]} cohort)"
+    end
+  end
+end
+
 def print_footer(list)
   puts "Overall, we have #{list.length} great students"
 end
@@ -36,4 +52,6 @@ end
 students = input_students
 print_header
 print(students)
+#print_by_letter(students)
+#print_by_length(students)
 print_footer(students)
