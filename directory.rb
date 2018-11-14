@@ -23,7 +23,13 @@ def input_students
       height: details[2].to_i
     }
     puts students
-    puts "Now we have #{students.length} students"
+
+    if students.length == 1
+      puts "Now we have 1 student"
+    else
+      puts "Now we have #{students.length} students"
+    end
+    
   end
   # return the array of students
   students
@@ -65,7 +71,11 @@ def print_by_length(students)
 end
 
 def print_footer(students)
-  puts "Overall, we have #{students.length} great students"
+  if students.length == 1
+    puts "Overall, we have 1 great student"
+  else
+    puts "Overall, we have #{students.length} great students"
+  end
 end
 
 students = input_students
