@@ -1,18 +1,29 @@
 # lets put all the students into an array
 def input_students
-  puts "Please enter the names of the students"
-  puts "To finish, just hit return twice"
+  puts "Please enter the names of the students,"
+  puts "  followed by additional details separated by ','"
+  puts "To finish, enter 'end'\n\n"
   # create an empty array
   students = []
-  # get the first name
-  name = gets.chomp
   # while the name is not empty, repeat this code
-  while !name.empty? do
+  while true do
+    puts "Name:"
+    name = gets.chomp.capitalize
+    break if name == "End"
+
+    puts "Cohort, Country of Birth, Height(cms):"
+    details = gets.chomp.split(",").map!(&:strip)
+    #details.map! { |category| category.strip }
+
     # add the student hash to the array
-    students << {name: name, cohort: :november}
+    students << {
+      name: name,
+      cohort: details[0].capitalize.to_sym,
+      birth_country: details[1].upcase.to_sym,
+      height: details[2].to_i
+    }
+    puts students
     puts "Now we have #{students.length} students"
-    # get another name from the user
-    name = gets.chomp
   end
   # return the array of students
   students
