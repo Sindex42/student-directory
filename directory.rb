@@ -1,4 +1,5 @@
 @line_width = 40
+#@longest_name = 0
 
 @students = []
 @student_name = ""
@@ -26,9 +27,15 @@ end
 def receive_details_input
   puts "Cohort, Country of Birth, Height(cms):"
   @student_details = gets.chomp.split(",").map!(&:strip)
+  puts "hi #{@student_details}"
 end
 
 def assign_details
+  puts "hello #{@student_details}"
+  @student_details[0] = "november" if @student_details[0] = ""
+  @student_details[1] = "xx" if @student_details[1] = ""
+  @student_details[2] = "000" if @student_details[2] = ""
+  puts "hello there #{@student_details}"
   @students << {
     name: @student_name,
     cohort: @student_details[0].capitalize.to_sym,
@@ -54,6 +61,7 @@ end
 def print_header
   puts "The students of Villains Academy".center(@line_width)
   puts "-------------".center(@line_width)
+  puts "   Name    Cohort    Country    Height"
 end
 
 def print_students_list_loop(students)
