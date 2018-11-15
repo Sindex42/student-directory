@@ -1,3 +1,5 @@
+@line_width = 40
+
 @students = []
 @student_name = ""
 @student_details = []
@@ -50,8 +52,8 @@ end
 
 
 def print_header
-  puts "The students of Villains Academy
-        -------------"
+  puts "The students of Villains Academy".center(@line_width)
+  puts "-------------".center(@line_width)
 end
 
 def print_students_list_loop(students)
