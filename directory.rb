@@ -2,13 +2,49 @@
 #@longest_name = 0
 
 @students = []
-@student_name = ""
-@student_details = []
 
 def input_students_header
   puts "Please enter the names of the students,"
   puts "  followed by any additional details separated by ','"
   puts "To finish, enter 'end' instead of a name\n\n"
+end
+
+def receive_name_input
+  puts "Name:"
+  @student_name = gets.chomp.capitalize
+end
+
+def receive_details_input
+  puts "Cohort:"
+  @cohort = gets.chomp
+  @cohort = "november" if @cohort.empty?
+  puts "Country of Birth:"
+  @country = gets.chomp
+  @country = "unknown" if @country.empty?
+  puts "Height(cms):"
+  @height = gets.chomp
+  @height = "unknown" if @height.empty?
+end
+
+def assign_details
+  @students << {
+    name: @student_name,
+    cohort: @cohort.capitalize.to_sym,
+    birth_country: @country.upcase.to_sym,
+    height: @height
+  }
+end
+
+def input_students
+  input_students_header
+
+  while true do
+    receive_name_input()
+    break if @student_name.empty?
+    receive_details_input()
+    assign_details()
+    input_students_footer()
+  end
 end
 
 def input_students_footer
@@ -18,44 +54,6 @@ def input_students_footer
     puts "Now we have #{@students.length} students"
   end
 end
-
-def receive_name_input
-  puts "Name:"
-  @student_name = gets.chomp.capitalize
-end
-
-def receive_details_input
-  puts "Cohort, Country of Birth, Height(cms):"
-  @student_details = gets.chomp.split(",").map!(&:strip)
-  puts "hi #{@student_details}"
-end
-
-def assign_details
-  puts "hello #{@student_details}"
-  @student_details[0] = "november" if @student_details[0] = ""
-  @student_details[1] = "xx" if @student_details[1] = ""
-  @student_details[2] = "000" if @student_details[2] = ""
-  puts "hello there #{@student_details}"
-  @students << {
-    name: @student_name,
-    cohort: @student_details[0].capitalize.to_sym,
-    birth_country: @student_details[1].upcase.to_sym,
-    height: @student_details[2].to_i
-  }
-end
-
-def input_students
-  input_students_header
-
-  while true do
-    receive_name_input()
-    break if @student_name == "End"
-    receive_details_input()
-    assign_details()
-    input_students_footer()
-  end
-end
-
 
 
 def print_header
@@ -78,7 +76,7 @@ def print_students_list(list)
       "#{index + 1}. #{student[:name]} "\
       "(#{student[:cohort]} cohort) "\
       "#{student[:birth_country]} "\
-      "#{student[:height]}cms"
+      "#{student[:height].to_i}cms"
       )
   end
 end
@@ -108,9 +106,7 @@ def print_footer(students)
 end
 
 
-input_students
-print_header
+input_students()
+print_header()
 print_students_list(@students)
-#print_by_letter(@students)
-#print_by_length(@students)
 print_footer(@students)
