@@ -3,6 +3,22 @@
 @longest_name = 0
 @line_width = 40
 
+## methods
+# input methods
+def input_students
+    input_students_header
+
+    while true do
+      receive_name_input()
+      break if @student_name.empty?
+      update_longest_name()
+      receive_details_input()
+      assign_details()
+      input_students_footer()
+    end
+end
+
+  # input sub methods
   def input_students_header
     puts "Please enter the names of the students,"\
          " followed by any prompted additional details"
@@ -50,24 +66,8 @@
     puts ""
   end
 
-def input_students
-    input_students_header
 
-    while true do
-      receive_name_input()
-      break if @student_name.empty?
-      update_longest_name()
-      receive_details_input()
-      assign_details()
-      input_students_footer()
-    end
-end
-
-
-  def add_name_spacing(shift = 0, category = 0)
-    (@longest_name - category + shift).times { print " " }
-  end
-
+# print methods
 def print_header
   puts "The students of Villains Academy".center(@line_width)
   puts "-------------".center(@line_width)
@@ -88,6 +88,28 @@ def print_students_list(students)
   end
 end
 
+def print_footer(students)
+  case @students.length
+  when 0
+    puts "We have no students"
+  when 1
+    puts "Overall, we have 1 great student"
+  else
+    puts "Overall, we have #{students.length} great students"
+  end
+  puts ""
+end
+
+  # print sub-methods
+  def add_name_spacing(shift = 0, category = 0)
+    (@longest_name - category + shift).times { print " " }
+  end
+
+  def list_all_cohorts
+    @cohort_list = (@students.map { |student| student[:cohort] }).uniq
+  end
+
+  # alternate print methods
   def print_students_list_loop(students)
     i = 0
     while i < @students.length do
@@ -129,28 +151,44 @@ end
     end
   end
 
-    def list_all_cohorts
-      @cohort_list = (@students.map { |student| student[:cohort] }).uniq
-    end
 
-def print_footer(students)
-  case @students.length
-  when 0
-    puts "We have no students"
-  when 1
-    puts "Overall, we have 1 great student"
-  else
-    puts "Overall, we have #{students.length} great students"
+# interactive menu
+def interactive_menu
+  loop do
+    print_menu()
+    process(gets.chomp)
   end
 end
 
+  # menu sub-methods
+  def print_menu
+    puts "1. Input the students"
+    puts "2. Show the students"
+    puts "9. Exit"
+  end
 
-input_students()
+  def show_students
+    unless @students.empty?
+      print_header()
+      print_students_list(@students)
+      #print_students_by_cohort(@students)
+    end
+    print_footer(@students)
+  end
 
-unless @students.empty?
-  print_header()
-  #print_students_list(@students)
-  print_students_by_cohort(@students)
-end
+  def process(selection)
+    case selection
+    when "1"
+      input_students()
+    when "2"
+      show_students()
+    when "9"
+      exit # this will cause the program to terminate
+    else
+      puts "I don't know what you meant, try again"
+    end
+  end
 
-print_footer(@students)
+
+## program instructions
+interactive_menu()
