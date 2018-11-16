@@ -4,9 +4,8 @@
 @students = []
 
 def input_students_header
-  puts "Please enter the names of the students,"
-  puts "  followed by any additional details separated by ','"
-  puts "To finish, enter 'end' instead of a name\n\n"
+  puts "Please enter the names of the students,"\
+       " followed by any prompted additional details\n\n"
 end
 
 def receive_name_input
@@ -35,18 +34,6 @@ def assign_details
   }
 end
 
-def input_students
-  input_students_header
-
-  while true do
-    receive_name_input()
-    break if @student_name.empty?
-    receive_details_input()
-    assign_details()
-    input_students_footer()
-  end
-end
-
 def input_students_footer
   if @students.length == 1
     puts "Now we have 1 student"
@@ -55,6 +42,20 @@ def input_students_footer
   end
 end
 
+  def input_students
+    input_students_header
+
+    while true do
+      receive_name_input()
+      break if @student_name.empty?
+      receive_details_input()
+      assign_details()
+      input_students_footer()
+    end
+  end
+
+def skip_print?
+end
 
 def print_header
   puts "The students of Villains Academy".center(@line_width)
@@ -98,7 +99,10 @@ def print_by_length(students)
 end
 
 def print_footer(students)
-  if @students.length == 1
+  case @students.length
+  when 0
+    puts "We have no students"
+  when 1
     puts "Overall, we have 1 great student"
   else
     puts "Overall, we have #{students.length} great students"
@@ -107,6 +111,10 @@ end
 
 
 input_students()
-print_header()
-print_students_list(@students)
+
+unless @students.empty?
+  print_header()
+  print_students_list(@students)
+end
+
 print_footer(@students)
