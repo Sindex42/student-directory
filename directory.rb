@@ -215,13 +215,8 @@ end
   def load_students(filename = "students.csv")
     file = File.open(filename, "r")
     file.readlines.each do |line|
-    name, cohort, country, height = line.chomp.split(",")
-      @students << {
-        name: name,
-        cohort: cohort.to_sym,
-        birth_country: country.to_sym,
-        height: height.to_i
-      }
+    @student_name, @cohort, @country, @height = line.chomp.split(",")
+      assign_details()
     end
     file.close
   end
@@ -231,7 +226,7 @@ end
     return if filename.nil? # get out of the methood is it isn't given
     if File.exists?(filename) # if it exists
       load_students(filename)
-      puts "Loaded #{@students.count} students from #{filename}"
+      puts "Loaded #{@students.count} from #{filename}"
     else # if it doesn't exist
       puts "Sorry, #{filename} doesn't exist"
       exit
