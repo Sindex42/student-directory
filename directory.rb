@@ -27,9 +27,9 @@ end
 
   def receive_name_input
     puts "Name:"
-    #@student_name = gets.chomp
+    #@student_name = STDIN.gets.chomp
     # reformats names so that every word is capitalized
-    @student_name = gets.chomp.split.map(&:capitalize).join(" ")
+    @student_name = STDIN.gets.chomp.split.map(&:capitalize).join(" ")
   end
 
   def update_longest_name
@@ -38,13 +38,13 @@ end
 
   def receive_details_input
     puts "Cohort:"
-    @cohort = gets.chomp
+    @cohort = STDIN.gets.chomp
     @cohort = "november" if @cohort.empty?
     puts "Country of Birth:"
-    @country = gets.chomp
+    @country = STDIN.gets.chomp
     @country = "unknown" if @country.empty?
     puts "Height(cms):"
-    @height = gets.chomp
+    @height = STDIN.gets.chomp
     @height = "unknown" if @height.empty?
   end
 
@@ -156,7 +156,7 @@ end
 def interactive_menu
   loop do
     print_menu()
-    process(gets.chomp)
+    process(STDIN.gets.chomp)
   end
 end
 
@@ -212,8 +212,8 @@ end
     file.close
   end
 
-  def load_students
-    file = File.open("students.csv", "r")
+  def load_students(filename = "students.csv")
+    file = File.open(filename, "r")
     file.readlines.each do |line|
     name, cohort, country, height = line.chomp.split(",")
       @students << {
@@ -226,5 +226,19 @@ end
     file.close
   end
 
+  def try_load_students
+    filename = ARGV.first # first argument from the command line
+    return if filename.nil? # get out of the methood is it isn't given
+    if File.exists?(filename) # if it exists
+      load_students(filename)
+      puts "Loaded #{@students.count} students from #{filename}"
+    else # if it doesn't exist
+      puts "Sorry, #{filename} doesn't exist"
+      exit
+    end
+  end
+
+
 ## program instructions
+try_load_students()
 interactive_menu()
