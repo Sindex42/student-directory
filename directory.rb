@@ -11,7 +11,6 @@ def input_students
     while true do
       receive_name_input()
       break if @student_name.empty?
-      update_longest_name()
       receive_details_input()
       assign_details()
       input_students_footer()
@@ -30,10 +29,6 @@ end
     #@student_name = STDIN.gets.chomp
     # reformats names so that every word is capitalized
     @student_name = STDIN.gets.chomp.split.map(&:capitalize).join(" ")
-  end
-
-  def update_longest_name
-    @longest_name = @student_name.length if @student_name.length > @longest_name
   end
 
   def receive_details_input
@@ -171,12 +166,19 @@ end
 
   def show_students
     unless @students.empty?
+      set_longest_name()
       print_header()
       print_students_list(@students)
       #print_students_by_cohort(@students)
     end
     print_footer(@students)
   end
+
+    def set_longest_name
+      @students.each do |student|
+        @longest_name = student[:name].length if student[:name].length > @longest_name
+      end
+    end
 
   def process(selection)
     case selection
