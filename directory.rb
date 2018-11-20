@@ -164,24 +164,6 @@ end
     puts "9. Exit"
   end
 
-  def show_students
-    unless @students.empty?
-      set_longest_name()
-      print_header()
-      print_students_list(@students)
-      #print_students_by_cohort(@students)
-    end
-    print_footer(@students)
-  end
-
-    def set_longest_name
-      @students.each do |student|
-        if student[:name].length > @longest_name
-          @longest_name = student[:name].length
-        end
-      end
-    end
-
   def process(selection)
     case selection
     when "1"
@@ -199,7 +181,27 @@ end
     end
   end
 
-  def save_students(filename = "students.csv")
+  def show_students
+    unless @students.empty?
+      set_longest_name()
+      print_header()
+      print_students_list(@students)
+    end
+    print_footer(@students)
+  end
+
+    def set_longest_name
+      @students.each do |student|
+        if student[:name].length > @longest_name
+          @longest_name = student[:name].length
+        end
+      end
+    end
+
+  def save_students
+    puts "Save as? (leave blank if saving as students.csv)"
+    filename = gets.chomp
+    filename = "students.csv" if filename.empty?
     # open the file for writing
     File.open(filename, "w") do |file|
       @students.each do |student|
