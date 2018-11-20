@@ -2,6 +2,7 @@
 @cohort_list = []
 @longest_name = 0
 @line_width = 40
+@filename = ""
 
 ## methods
 # input methods
@@ -171,9 +172,11 @@ end
     when "2"
       show_students()
     when "3"
+      choose_savefile()
       save_students()
     when "4"
-      load_students()
+      choose_loadfile()
+      load_students(@filename)
     when "9"
       exit # this will cause the program to terminate
     else
@@ -198,12 +201,15 @@ end
       end
     end
 
+    def choose_savefile
+      puts "Save as? (leave blank if saving as students.csv)"
+      @filename = STDIN.gets.chomp
+      @filename = "students.csv" if @filename.empty?
+    end
+
   def save_students
-    puts "Save as? (leave blank if saving as students.csv)"
-    filename = gets.chomp
-    filename = "students.csv" if filename.empty?
     # open the file for writing
-    File.open(filename, "w") do |file|
+    File.open(@filename, "w") do |file|
       @students.each do |student|
         student_data = [
           student[:name],
@@ -216,8 +222,14 @@ end
         file.puts csv_line
       end
     end
-    puts "Saved #{@students.length} students to #{filename}\n\n"
+    puts "Saved #{@students.length} students to #{@filename}\n\n"
   end
+
+    def choose_loadfile
+      puts "Enter file to load (leave blank if loading students.csv)"
+      @filename = STDIN.gets.chomp
+      @filename = "students.csv" if @filename.empty?
+    end
 
   def load_students(filename = "students.csv")
     File.open(filename, "r") do |file|
