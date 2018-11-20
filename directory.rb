@@ -172,10 +172,13 @@ end
     when "2"
       show_students()
     when "3"
-      choose_savefile()
+      puts "Save as? (leave blank if saving as students.csv)"
+      choose_file()
       save_students()
     when "4"
-      choose_loadfile()
+      puts "Enter file to load (leave blank if loading students.csv)"
+      choose_file()
+      @students = []
       load_students(@filename)
     when "9"
       exit # this will cause the program to terminate
@@ -201,8 +204,7 @@ end
       end
     end
 
-    def choose_savefile
-      puts "Save as? (leave blank if saving as students.csv)"
+    def choose_file
       @filename = STDIN.gets.chomp
       @filename = "students.csv" if @filename.empty?
     end
@@ -224,12 +226,6 @@ end
     end
     puts "Saved #{@students.length} students to #{@filename}\n\n"
   end
-
-    def choose_loadfile
-      puts "Enter file to load (leave blank if loading students.csv)"
-      @filename = STDIN.gets.chomp
-      @filename = "students.csv" if @filename.empty?
-    end
 
   def load_students(filename = "students.csv")
     File.open(filename, "r") do |file|
