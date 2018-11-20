@@ -176,7 +176,9 @@ end
 
     def set_longest_name
       @students.each do |student|
-        @longest_name = student[:name].length if student[:name].length > @longest_name
+        if student[:name].length > @longest_name
+          @longest_name = student[:name].length
+        end
       end
     end
 
@@ -197,10 +199,9 @@ end
     end
   end
 
-  def save_students
+  def save_students(filename = "students.csv")
     # open the file for writing
-    File.open("students.csv", "w") do |file|
-    # iterate over the array of students
+    File.open(filename, "w") do |file|
       @students.each do |student|
         student_data = [
           student[:name],
@@ -208,10 +209,12 @@ end
           student[:birth_country],
           student[:height]
         ]
+
         csv_line = student_data.join(",")
         file.puts csv_line
       end
     end
+    puts "Saved #{@students.length} students to #{filename}\n\n"
   end
 
   def load_students(filename = "students.csv")
@@ -221,14 +224,15 @@ end
         assign_details()
       end
     end
+    puts "Loaded #{@students.count} students from #{filename}\n\n"
   end
+
 
   def try_load_students
     filename = ARGV.first # first argument from the command line
     filename = "students.csv" if filename.nil?
     if File.exists?(filename) # if it exists
       load_students(filename)
-      puts "Loaded #{@students.count} from #{filename}"
     else # if it doesn't exist
       puts "Sorry, #{filename} doesn't exist"
       exit
