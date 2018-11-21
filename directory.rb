@@ -215,7 +215,7 @@ end
 
   def save_students
     # open the file for writing
-    File.open(@filename, "w") do |file|
+    CSV.open(@filename, "w") do |file|
       @students.each do |student|
         student_data = [
           student[:name],
@@ -223,9 +223,7 @@ end
           student[:birth_country],
           student[:height]
         ]
-
-        csv_line = student_data.join(",")
-        file.puts csv_line
+        file << student_data
       end
     end
     puts "Saved #{@students.length} students to #{@filename}\n\n"
