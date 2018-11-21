@@ -1,3 +1,5 @@
+require "csv"
+
 @students = []
 @cohort_list = []
 @longest_name = 0
@@ -229,12 +231,10 @@ end
     puts "Saved #{@students.length} students to #{@filename}\n\n"
   end
 
-  def load_students(filename = "students.csv")
-    File.open(filename, "r") do |file|
-      file.readlines.each do |line|
-      @student_name, @cohort, @country, @height = line.chomp.split(",")
+  def load_students(filename)
+    CSV.foreach(filename) do |line|
+      @student_name, @cohort, @country, @height = line
         assign_details()
-      end
     end
     puts "Loaded #{@students.count} students from #{filename}\n\n"
   end
