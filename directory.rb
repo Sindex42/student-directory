@@ -152,13 +152,7 @@ end
     @cohort_list.each do |cohort|
       students.each_with_index do |student, student_number|
         if student[:cohort] == cohort
-          print "#{student_number + 1}. #{student[:name]}"
-          add_name_spacing(1, student[:name].length)
-          puts(
-            "(#{student[:cohort]} cohort) "\
-            "#{student[:birth_country]} "\
-            "#{student[:height].to_i}cms"
-            )
+          print_one_student(student, student_number)
         end
       end
     end
@@ -188,9 +182,10 @@ end
 
 def print_menu
   puts "1. Input the students"
-  puts "2. Show the students"
-  puts "3. Save the list to a file"
-  puts "4. Load the list from a file"
+  puts "2. List students in numerical order"
+  puts "3. List students grouped by cohort"
+  puts "6. Save the list to a file"
+  puts "7. Load the list from a file"
   puts "9. Exit"
 end
 
@@ -201,10 +196,12 @@ def process(selection)
   when "2"
     show_students()
   when "3"
+    show_students_by_cohort()
+  when "6"
     puts "Save as? (leave blank if saving as students.csv)"
     choose_file()
     save_students()
-  when "4"
+  when "7"
     puts "Enter file to load (leave blank if loading students.csv)"
     choose_file()
     @students = []
@@ -223,6 +220,15 @@ end
       set_longest_name()
       print_header()
       print_students_list(@students)
+    end
+    print_footer(@students)
+  end
+
+  def show_students_by_cohort
+    unless @students.empty?
+      set_longest_name()
+      print_header()
+      print_students_by_cohort(@students)
     end
     print_footer(@students)
   end
