@@ -20,6 +20,7 @@ def input_students
     end
 end
 
+
   # input sub methods
   def input_students_header
     puts "Please enter the names of the students,"\
@@ -29,8 +30,6 @@ end
 
   def receive_name_input
     puts "Name:"
-    #@student_name = STDIN.gets.chomp
-    # reformats names so that every word is capitalized
     @student_name = STDIN.gets.chomp.split.map(&:capitalize).join(" ")
   end
 
@@ -66,6 +65,7 @@ end
 
 
 
+
 # print methods
 def print_header
   puts "The students of Villains Academy".center(@line_width)
@@ -73,6 +73,14 @@ def print_header
   print "Nr Name"
   add_name_spacing(-2)
   puts "Cohort           Country Height"
+end
+
+def set_longest_name
+  @students.each do |student|
+    if student[:name].length > @longest_name
+      @longest_name = student[:name].length
+    end
+  end
 end
 
 def print_students_list(students)
@@ -99,6 +107,7 @@ def print_footer(students)
   puts ""
 end
 
+
   # print sub-methods
   def add_name_spacing(shift = 0, category = 0)
     (@longest_name - category + shift).times { print " " }
@@ -107,6 +116,7 @@ end
   def list_all_cohorts
     @cohort_list = (@students.map { |student| student[:cohort] }).uniq
   end
+
 
   # alternate print methods
   def print_students_list_loop(students)
@@ -152,7 +162,19 @@ end
 
 
 
+
 # interactive menu
+def try_load_students
+  filename = ARGV.first # first argument from the command line
+  filename = "students.csv" if filename.nil?
+  if File.exists?(filename) # if it exists
+    load_students(filename)
+  else # if it doesn't exist
+    puts "Sorry, #{filename} doesn't exist"
+    exit
+  end
+end
+
 def interactive_menu
   loop do
     print_menu()
@@ -160,37 +182,38 @@ def interactive_menu
   end
 end
 
-  # menu sub-methods
-  def print_menu
-    puts "1. Input the students"
-    puts "2. Show the students"
-    puts "3. Save the list to a file"
-    puts "4. Load the list from a file"
-    puts "9. Exit"
-  end
+def print_menu
+  puts "1. Input the students"
+  puts "2. Show the students"
+  puts "3. Save the list to a file"
+  puts "4. Load the list from a file"
+  puts "9. Exit"
+end
 
-  def process(selection)
-    case selection
-    when "1"
-      input_students()
-    when "2"
-      show_students()
-    when "3"
-      puts "Save as? (leave blank if saving as students.csv)"
-      choose_file()
-      save_students()
-    when "4"
-      puts "Enter file to load (leave blank if loading students.csv)"
-      choose_file()
-      @students = []
-      load_students(@filename)
-    when "9"
-      exit # this will cause the program to terminate
-    else
-      puts "I don't know what you meant, try again"
-    end
+def process(selection)
+  case selection
+  when "1"
+    input_students()
+  when "2"
+    show_students()
+  when "3"
+    puts "Save as? (leave blank if saving as students.csv)"
+    choose_file()
+    save_students()
+  when "4"
+    puts "Enter file to load (leave blank if loading students.csv)"
+    choose_file()
+    @students = []
+    load_students(@filename)
+  when "9"
+    exit # this will cause the program to terminate
+  else
+    puts "I don't know what you meant, try again"
   end
+end
 
+
+  # menu options
   def show_students
     unless @students.empty?
       set_longest_name()
@@ -199,19 +222,6 @@ end
     end
     print_footer(@students)
   end
-
-    def set_longest_name
-      @students.each do |student|
-        if student[:name].length > @longest_name
-          @longest_name = student[:name].length
-        end
-      end
-    end
-
-    def choose_file
-      @filename = STDIN.gets.chomp
-      @filename = "students.csv" if @filename.empty?
-    end
 
   def save_students
     # open the file for writing
@@ -237,16 +247,15 @@ end
     puts "Loaded #{@students.count} students from #{filename}\n\n"
   end
 
-  def try_load_students
-    filename = ARGV.first # first argument from the command line
-    filename = "students.csv" if filename.nil?
-    if File.exists?(filename) # if it exists
-      load_students(filename)
-    else # if it doesn't exist
-      puts "Sorry, #{filename} doesn't exist"
-      exit
-    end
+
+  # menu sub-methods
+  def choose_file
+    @filename = STDIN.gets.chomp
+    @filename = "students.csv" if @filename.empty?
   end
+
+
+
 
 ## program instructions
 try_load_students()
