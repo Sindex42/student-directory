@@ -5,6 +5,7 @@ require "csv"
 @longest_name = 0
 @line_width = 40
 @filename = ""
+@letter = ""
 
 ## methods
 # input methods
@@ -131,10 +132,10 @@ end
     end
   end
 
-  def print_students_by_letter(students, letter)
-    students.each_with_index do |student, index|
-      if student[:name].start_with?(letter)
-        puts "#{index + 1}. #{student[:name]} (#{student[:cohort]} cohort)"
+  def print_students_by_letter(students)
+    students.each_with_index do |student, student_number|
+      if student[:name].start_with?(@letter)
+        print_one_student(student, student_number)
       end
     end
   end
@@ -182,8 +183,9 @@ end
 
 def print_menu
   puts "1. Input the students"
-  puts "2. List students in numerical order"
-  puts "3. List students grouped by cohort"
+  puts "2. Show students in numerical order"
+  puts "3. Show students grouped by cohort"
+  puts "4. Show students whose name begins with ..."
   puts "6. Save the list to a file"
   puts "7. Load the list from a file"
   puts "9. Exit"
@@ -197,6 +199,9 @@ def process(selection)
     show_students()
   when "3"
     show_students_by_cohort()
+  when "4"
+    choose_letter()
+    show_students_by_letter()
   when "6"
     puts "Save as? (leave blank if saving as students.csv)"
     choose_file()
@@ -233,6 +238,15 @@ end
     print_footer(@students)
   end
 
+  def show_students_by_letter
+    unless @students.empty?
+      set_longest_name()
+      print_header()
+      print_students_by_letter(@students)
+    end
+    print_footer(@students)
+  end
+
   def save_students
     # open the file for writing
     CSV.open(@filename, "w") do |file|
@@ -264,7 +278,10 @@ end
     @filename = "students.csv" if @filename.empty?
   end
 
-
+  def choose_letter
+    puts "Enter the first letter of the names you wish to show"
+    @letter = STDIN.gets.chomp.capitalize
+  end
 
 
 ## program instructions
