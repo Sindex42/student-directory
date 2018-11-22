@@ -85,13 +85,7 @@ end
 
 def print_students_list(students)
   students.each_with_index do |student, student_number|
-    print "#{student_number + 1}. #{student[:name]}"
-    add_name_spacing(1, student[:name].length)
-    puts(
-      "(#{student[:cohort]} cohort) "\
-      "#{student[:birth_country]} "\
-      "#{student[:height].to_i}cms"
-      )
+    print_one_student(student, student_number)
   end
 end
 
@@ -109,6 +103,16 @@ end
 
 
   # print sub-methods
+  def print_one_student(student, student_number)
+    print "#{student_number + 1}. #{student[:name]}"
+    add_name_spacing(1, student[:name].length)
+    puts(
+      "(#{student[:cohort]} cohort) "\
+      "#{student[:birth_country]} "\
+      "#{student[:height].to_i}cms"
+        )
+  end
+
   def add_name_spacing(shift = 0, category = 0)
     (@longest_name - category + shift).times { print " " }
   end
