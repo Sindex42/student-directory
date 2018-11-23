@@ -57,12 +57,7 @@ end
   end
 
   def input_students_footer
-    if @students.length == 1
-      puts "Now we have 1 student"
-    else
-      puts "Now we have #{@students.length} students"
-    end
-    puts ""
+    puts "Now we have #{@students.count} #{@students.one? ? 'student' : 'students'}\n\n"
   end
 
 
@@ -92,15 +87,11 @@ def print_students_list(students)
 end
 
 def print_footer(students)
-  case @students.length
-  when 0
-    puts "We have no students"
-  when 1
-    puts "Overall, we have 1 great student"
+  if @students.count == 0
+    puts "We have no students\n\n"
   else
-    puts "Overall, we have #{students.length} great students"
+    puts "Overall we have #{students.count} great #{students.one? ? 'student' : 'students'}\n\n"
   end
-  puts ""
 end
 
 
