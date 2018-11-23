@@ -6,6 +6,7 @@ require "csv"
 @line_width = 40
 @filename = ""
 @letter = ""
+@length = 0
 
 ## methods
 # input methods
@@ -140,10 +141,10 @@ end
     end
   end
 
-  def print_students_by_length(students, length)
-    list.each_with_index do |student, index|
-      if student[:name].length <= length
-        puts "#{index + 1}. #{student[:name]} (#{student[:cohort]} cohort)"
+  def print_students_by_length(students)
+    students.each_with_index do |student, student_number|
+      if student[:name].length <= @length
+        print_one_student(student, student_number)
       end
     end
   end
@@ -185,7 +186,8 @@ def print_menu
   puts "1. Input the students"
   puts "2. Show students in numerical order"
   puts "3. Show students grouped by cohort"
-  puts "4. Show students whose name begins with ..."
+  puts "4. Show students whose names begin with ..."
+  puts "5. Show students whose names are shorter than ..."
   puts "6. Save the list to a file"
   puts "7. Load the list from a file"
   puts "9. Exit"
@@ -202,6 +204,9 @@ def process(selection)
   when "4"
     choose_letter()
     show_students_by_letter()
+  when "5"
+    choose_length()
+    show_students_by_length()
   when "6"
     puts "Save as? (leave blank if saving as students.csv)"
     choose_file()
@@ -247,6 +252,15 @@ end
     print_footer(@students)
   end
 
+  def show_students_by_length
+    unless @students.empty?
+      set_longest_name()
+      print_header()
+      print_students_by_length(@students)
+    end
+    print_footer(@students)
+  end
+
   def save_students
     # open the file for writing
     CSV.open(@filename, "w") do |file|
@@ -281,6 +295,11 @@ end
   def choose_letter
     puts "Enter the first letter of the names you wish to show"
     @letter = STDIN.gets.chomp.capitalize
+  end
+
+  def choose_length
+    puts "Enter the maximum character length of the names you wish to show"
+    @length = STDIN.gets.chomp.to_i
   end
 
 
