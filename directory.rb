@@ -188,16 +188,14 @@ def process(selection)
   case selection
   when "1"
     input_students()
-  when "2"
-    show_students()
-  when "3"
-    show_students_by_cohort()
+  when "2", "3"
+    show_students_case(selection)
   when "4"
     choose_letter()
-    show_students_by_letter()
+    show_students_case(selection)
   when "5"
     choose_length()
-    show_students_by_length()
+    show_students_case(selection)
   when "6"
     puts "Save as? (leave blank if saving as students.csv)"
     choose_file()
@@ -216,38 +214,20 @@ end
 
 
   # menu options
-  def show_students
+  def show_students_case(selection)
     unless @students.empty?
       set_longest_name()
       print_header()
-      print_students_list(@students)
-    end
-    print_footer(@students)
-  end
-
-  def show_students_by_cohort
-    unless @students.empty?
-      set_longest_name()
-      print_header()
-      print_students_by_cohort(@students)
-    end
-    print_footer(@students)
-  end
-
-  def show_students_by_letter
-    unless @students.empty?
-      set_longest_name()
-      print_header()
-      print_students_by_letter(@students)
-    end
-    print_footer(@students)
-  end
-
-  def show_students_by_length
-    unless @students.empty?
-      set_longest_name()
-      print_header()
-      print_students_by_length(@students)
+      case selection
+      when "2"
+        print_students_list(@students)
+      when "3"
+        print_students_by_cohort(@students)
+      when "4"
+        print_students_by_letter(@students)
+      when "5"
+        print_students_by_length(@students)
+      end
     end
     print_footer(@students)
   end
