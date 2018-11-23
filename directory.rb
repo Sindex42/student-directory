@@ -80,9 +80,27 @@ def set_longest_name
   end
 end
 
-def print_students_list(students)
+def print_students_by_case(students, selection)
   students.each_with_index do |student, student_number|
-    print_one_student(student, student_number)
+    case selection
+    when "2"
+      print_one_student(student, student_number)
+    when "4"
+      print_one_student(student, student_number) if student[:name].start_with?(@letter)
+    when "5"
+      print_one_student(student, student_number) if student[:name].length <= @length
+    end
+  end
+end
+
+def print_students_by_cohort(students)
+  list_all_cohorts()
+  @cohort_list.each do |cohort|
+    students.each_with_index do |student, student_number|
+      if student[:cohort] == cohort
+        print_one_student(student, student_number)
+      end
+    end
   end
 end
 
@@ -124,33 +142,6 @@ end
     end
   end
 
-  def print_students_by_letter(students)
-    students.each_with_index do |student, student_number|
-      if student[:name].start_with?(@letter)
-        print_one_student(student, student_number)
-      end
-    end
-  end
-
-  def print_students_by_length(students)
-    students.each_with_index do |student, student_number|
-      if student[:name].length <= @length
-        print_one_student(student, student_number)
-      end
-    end
-  end
-
-  def print_students_by_cohort(students)
-    list_all_cohorts()
-    @cohort_list.each do |cohort|
-      students.each_with_index do |student, student_number|
-        if student[:cohort] == cohort
-          print_one_student(student, student_number)
-        end
-      end
-    end
-  end
-
 
 
 
@@ -189,13 +180,13 @@ def process(selection)
   when "1"
     input_students()
   when "2", "3"
-    show_students_case(selection)
+    show_students_by_case(selection)
   when "4"
     choose_letter()
-    show_students_case(selection)
+    show_students_by_case(selection)
   when "5"
     choose_length()
-    show_students_case(selection)
+    show_students_by_case(selection)
   when "6"
     puts "Save as? (leave blank if saving as students.csv)"
     choose_file()
@@ -214,19 +205,15 @@ end
 
 
   # menu options
-  def show_students_case(selection)
+  def show_students_by_case(selection)
     unless @students.empty?
       set_longest_name()
       print_header()
       case selection
-      when "2"
-        print_students_list(@students)
+      when "2", "4", "5"
+        print_students_by_case(@students, selection)
       when "3"
         print_students_by_cohort(@students)
-      when "4"
-        print_students_by_letter(@students)
-      when "5"
-        print_students_by_length(@students)
       end
     end
     print_footer(@students)
